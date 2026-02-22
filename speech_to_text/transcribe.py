@@ -37,11 +37,32 @@ def _recognize(recognizer, audio, language):
 
 
 if __name__ == "__main__":
+    import argparse
     import sys
 
-    if len(sys.argv) > 1:
-        path = sys.argv[1]
-        lang = sys.argv[2] if len(sys.argv) > 2 else "en-US"
-        print(transcribe_file(path, language=lang))
+    parser = argparse.ArgumentParser(description="Transcribe audio from microphone or WAV file.")
+    parser.add_argument("input", nargs="?", help="Path to WAV file. Omit to use microphone.")
+    parser.add_argument("-l", "--language", default="en-US", help="Language for transcription (default: en-US)")
+    parser.add_argument("-o", "--output", help="Write transcription to this text file (optional)")
+    args = parser.parse_args()
+
+    if args.input:
+        result = transcribe_file(args.input, language=args.language)
     else:
-        print(transcribe_microphone())
+        try:
+            result = transcribe_microphone(language=args.language)
+        except Exception as e:
+            print(f"Microphone error: {e}", file=sys.stderr)
+            sys.exit(1)
+
+    # Print to stdout and optionally write to a file
+    print(result)
+    if args.output:
+        out_path = args.output
+        try:
+            with open(out_path, "w", encoding="utf-8") as f:
+                f.write(result)
+            print(f"Wrote transcription to: {out_path}")
+        except Exception as e:
+            print(f"Failed to write output file: {e}", file=sys.stderr)
+            sys.exit(1)
