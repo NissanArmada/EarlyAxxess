@@ -12,16 +12,6 @@ import sys
 import time
 from pathlib import Path
 
-# #region agent log
-def _dlog(location: str, message: str, data: dict, hypothesis_id: str) -> None:
-    log_path = Path(__file__).resolve().parent.parent / "debug-c2a38d.log"
-    payload = {"sessionId": "c2a38d", "id": f"log_{int(time.time()*1000)}", "timestamp": int(time.time() * 1000), "location": location, "message": message, "data": data, "runId": "run1", "hypothesisId": hypothesis_id}
-    try:
-        with open(log_path, "a", encoding="utf-8") as f:
-            f.write(json.dumps(payload) + "\n")
-    except Exception:
-        pass
-# #endregion
 
 # Load .env from repo root (parent of speaker_diarization) when present
 def _load_env() -> None:
