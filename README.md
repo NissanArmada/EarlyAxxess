@@ -1,3 +1,7 @@
+<p align="center">
+   <img src="https://c.tenor.com/0qmwPpGr-jgAAAAC/tenor.gif" alt="Low Cortisol">
+</p>
+
 # 🏥 EarlyAxxess
 
 **Description**
